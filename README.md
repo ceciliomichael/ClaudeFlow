@@ -1,3 +1,5 @@
+> **Note**: ClaudeCode is designed for use within AI-integrated IDEs (like Cursor). While the principles and structure can be adapted for other AI models, the system, commands, and workflows were primarily developed and tested with **Claude 3.7**, which is recommended for the optimal experience.
+
 # ClaudeCode System
 
 A sophisticated project management and execution system built around Claude AI, designed for seamless context retention, efficient planning, and methodical implementation of complex software projects.
