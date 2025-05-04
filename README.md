@@ -1,16 +1,16 @@
-> **Note**: ClaudeCode is designed for use within AI-integrated IDEs (like Cursor). While the principles and structure can be adapted for other AI models, the system, commands, and workflows were primarily developed and tested with **Claude 3.7**, which is recommended for the optimal experience. See the `vibe-coding-guide.md` for tips on leveraging this system for structured AI-driven development (vibe coding).
+> **Note**: ClaudeFlow is designed for use within AI-integrated IDEs (like Cursor). While the principles and structure can be adapted for other AI models, the system, commands, and workflows were primarily developed and tested with **Claude 3.7**, which is recommended for the optimal experience. See the `vibe-coding-guide.md` for tips on leveraging this system for structured AI-driven development (vibe coding).
 
-# ClaudeCode System
+# ClaudeFlow System
 
 A sophisticated project management and execution system built around Claude AI, designed for seamless context retention, efficient planning, and methodical implementation of complex software projects.
 
 ## Overview
 
-ClaudeCode enhances Claude's capabilities with structured workflows, persistent memory, and methodical execution. Using custom commands and a well-defined file structure within the `.session` directory, it maintains project state, tracks progress, and ensures continuity between development sessions.
+ClaudeFlow enhances Claude's capabilities with structured workflows, persistent memory, and methodical execution. Using custom commands and a well-defined file structure within the `.session` directory, it maintains project state, tracks progress, and ensures continuity between development sessions.
 
 ## Custom Commands
 
-ClaudeCode utilizes slash commands to trigger specific actions:
+ClaudeFlow utilizes slash commands to trigger specific actions:
 
 | Command | Description |
 |---------|-------------|
@@ -95,7 +95,7 @@ Based on practical testing, the following workflow provides the most reliable re
     *   **Within a Session**: You can continue using `/act`, but be mindful of potential context window limitations or AI drift in very long sessions.
 4.  **Bug Fixing**: Use `/sessionlog` to append fix details to the latest log.
 
-## Extending ClaudeCode: Adding Custom Commands
+## Extending ClaudeFlow: Adding Custom Commands
 
 Follow these steps to add new commands:
 1.  **Define**: Choose a name (`/command`), define purpose.
@@ -120,4 +120,4 @@ Follow these steps to add new commands:
 - State maintained via memory system. 
 
 ---
-*Note: The ClaudeCode system workflow and commands were developed and tested primarily using Claude 3.7 within the Cursor IDE environment.* 
+*Note: The ClaudeFlow system workflow and commands were developed and tested primarily using Claude 3.7 within the Cursor IDE environment.* 

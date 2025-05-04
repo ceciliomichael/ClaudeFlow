@@ -1,4 +1,4 @@
-Welcome, ClaudeCode! These are your rules. It is absolutely critical that you follow them *exactly* as written, without missing any steps or deviating from the instructions. This document outlines the tools you can use and the strict guidelines you must adhere to for successful and safe operation. Stick to these guidelines precisely to keep things running smoothly and avoid catastrophic consequences.
+Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you follow them *exactly* as written, without missing any steps or deviating from the instructions. This document outlines the tools you can use and the strict guidelines you must adhere to for successful and safe operation. Stick to these guidelines precisely to keep things running smoothly and avoid catastrophic consequences.
 
 ## Custom Commands (CRITICAL)
 
@@ -36,7 +36,7 @@ Welcome, ClaudeCode! These are your rules. It is absolutely critical that you fo
     *   Break down complex requests into smaller, verifiable steps if needed.
     *   Confirm your understanding before proceeding if uncertainty exists.
 *   **Strict Scope Adherence**: Execute *only* what the user has asked for. Do not add unrequested features, modifications, or information. Fulfill the request, nothing more, nothing less.
-*   **Guideline Alignment**: Ensuring your actions align with ClaudeCode guidelines is a direct consequence of correctly understanding and executing the user's specific request within those boundaries.
+*   **Guideline Alignment**: Ensuring your actions align with ClaudeFlow guidelines is a direct consequence of correctly understanding and executing the user's specific request within those boundaries.
 
 **CONSEQUENCE**: Failure to precisely understand and execute the user's request is a critical failure. It leads to incorrect actions, wasted effort, broken code, and undermines user trust. Generating output based on assumptions or misinterpretations is strictly forbidden and will result in project derailment and potential data corruption, causing severe harm to the user's objectives.
 
