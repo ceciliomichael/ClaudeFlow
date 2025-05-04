@@ -1,4 +1,4 @@
-> **Note**: ClaudeCode is designed for use within AI-integrated IDEs (like Cursor). While the principles and structure can be adapted for other AI models, the system, commands, and workflows were primarily developed and tested with **Claude 3.7**, which is recommended for the optimal experience.
+> **Note**: ClaudeCode is designed for use within AI-integrated IDEs (like Cursor). While the principles and structure can be adapted for other AI models, the system, commands, and workflows were primarily developed and tested with **Claude 3.7**, which is recommended for the optimal experience. See the `vibe-coding-guide.md` for tips on leveraging this system for structured AI-driven development (vibe coding).
 
 # ClaudeCode System
 
