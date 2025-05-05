@@ -52,8 +52,17 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
 
 ### 3. Iterative Refinement & Review (During `/act`)
 
-- **Test Generated Code**: After the AI generates code within a phase, test it rigorously.
-- **Provide Feedback**: Use natural language prompts to tell the AI what needs fixing or changing. *"This function fails when input is null, add error handling.", "Refactor this component to use the state management pattern defined in `/memory decisions`."*
+- **Rigorously Test Generated Code**: After the AI generates code within a phase, test it thoroughly across multiple dimensions:
+  - **Functionality Testing**: Ensure all features work as expected in typical usage scenarios
+  - **Edge Case Testing**: Test with unusual or extreme inputs
+  - **Security Analysis**: Actively look for security vulnerabilities (injection attacks, improper authentication, insecure data handling)
+  - **Performance Testing**: Check for inefficient algorithms or resource leaks
+  - **Cross-Browser/Device Testing**: Verify the solution works across required platforms
+  - **Accessibility Testing**: Ensure the solution meets accessibility requirements
+  - **Integration Testing**: Verify the new code works properly with existing components
+- **Provide Detailed Testing Feedback**: Tell the AI specifically what issues you found: *"The authentication function is vulnerable to SQL injection when special characters are used in the username", "The image loading fails on Safari", "The function crashes when given empty input"*
+- **Require Security-First Thinking**: Ask the AI to explain potential security implications of its code during review
+- **Demand Iterative Fixes**: Vibe coding is not "generate and move on" but "generate, test, fix, test again"
 - **Log Key Decisions**: `/sessionlog add "Decision: Used pattern X for Y based on AI suggestion and testing."`
 - **Store Important Snippets/Patterns**: `/memory store "Pattern_Example: [Code Snippet for pattern Z]"`
 
@@ -74,7 +83,14 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
 
 - **Be Specific in Prompts**: Vague prompts lead to vague (and often buggy) code. Provide context, constraints, and examples.
 - **Break Down Complexity**: Use the `/plan` phases to tackle smaller, well-defined generation tasks.
-- **Review and Test Everything**: Treat AI-generated code as a first draft. Always review, test, and understand it before accepting.
+- **Test Relentlessly**: Vibe coding is not just instructing the AI to create—you MUST test every output rigorously. Look for:
+  - **Functional Bugs**: Does it do what it's supposed to do in all cases?
+  - **Security Flaws**: Is it vulnerable to common attacks? (XSS, CSRF, SQL injection, etc.)
+  - **Performance Issues**: Does it handle scale efficiently?
+  - **Compatibility Problems**: Does it work across all required platforms/browsers?
+  - **Edge Cases**: How does it handle unusual inputs or boundary conditions?
+  - **Error Handling**: Does it gracefully handle failures?
+- **Adopt a Security-First Mindset**: AI models often prioritize functionality over security. Always ask: "How could this code be exploited?"
 - **Don't Trust Implicitly**: Question the AI's output. Ask for explanations. Ensure it aligns with the project's goals and constraints stored in `/memory`.
 - **Maintain the Structure**: Diligently use `/plan`, `/memory`, and `/sessionlog` to keep the process organized and traceable.
 - **Guide, Don't Just Accept**: You are the architect. Use the AI as a very skilled builder, but direct the construction.
@@ -88,12 +104,15 @@ Evaluate your structured vibe coding by:
 - **Goal Alignment**: Does the generated application meet the requirements defined in `/plan` and `/memory`?
 - **Maintainability**: How easy is it to understand, debug, and update the codebase (aided by `/sessionlog`)?
 - **Efficiency**: How much faster was development compared to manual coding, considering the time spent prompting, reviewing, and refining?
+- **Security Posture**: Has the code been thoroughly tested for security vulnerabilities? Does it follow security best practices?
 
 ## Conclusion
 
-Vibe coding, when powered by natural language AI, offers incredible potential for accelerating development. However, without structure, it risks creating problematic codebases. ClaudeCode provides the essential framework—planning, memory, logging, and phased execution—to transform vibe coding into a disciplined, effective, and safer methodology. By guiding the AI within the ClaudeCode structure, you can leverage its speed and capabilities while maintaining control, ensuring quality, and building robust, maintainable software.
+Vibe coding, when powered by natural language AI, offers incredible potential for accelerating development. However, without structure and rigorous testing, it risks creating problematic, insecure codebases. ClaudeCode provides the essential framework—planning, memory, logging, and phased execution—to transform vibe coding into a disciplined, effective, and safer methodology. 
 
-Embrace the vibe, but structure the flow with ClaudeCode!
+Remember: In vibe coding, you are not just instructing the AI to create code—you are part of an iterative process where your testing, feedback, and security analysis are critical to producing reliable results. By guiding the AI within the ClaudeCode structure and thoroughly testing its output, you can leverage its speed and capabilities while maintaining control, ensuring quality, and building robust, maintainable, and secure software.
+
+Embrace the vibe, but structure the flow and test the output with ClaudeCode!
 
 ---
 *Note: This guide and the ClaudeCode system workflow were developed and tested primarily using Claude 3.7 within the Cursor IDE environment.*

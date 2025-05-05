@@ -45,12 +45,13 @@
 
 4.  **Create Context Map File**: Create/update `.session/memory/context_map.md` (≤70 lines):
     * Visual ASCII/markdown relationship map
-    * Shows connections between project components
-    * Indicates dependency flow
-    * Maps decision impacts to components
+    * Use **Mermaid diagram** syntax (e.g., `graph TD; A-->B;`) for the relationship map.
+    * Shows connections between project components (modules, classes, key functions).
+    * Indicates dependency flow (e.g., data flow, control flow).
+    * Optionally, maps decision impacts to components (using annotations or labels).
 
 5.  **Optimize for Token Efficiency**:
-    * Use bullet points, not paragraphs
+    * Use bullet points, not paragraphs (except within Mermaid labels if needed).
     * Prefer tables for structured information
     * Use hierarchy (headings) to organize information
     * Eliminate redundancy across files
