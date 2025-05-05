@@ -22,7 +22,7 @@ When the user invokes the `/create [description]` command, follow these steps pr
    - **Title**: Brief, descriptive title for the creation task.
    - **Overview**: Concise summary of what will be created and the chosen approach.
    - **Rationale**: Brief explanation of *why* this approach/structure was chosen (if non-obvious).
-   - **Implementation Steps**: A detailed, numbered list of specific actions (e.g., "Create file `src/components/Button.jsx` with...", "Add the following configuration to `config.json`...", "Modify function `calculateTotal` in `utils.js` to handle...")
+   - **Implementation Steps**: A detailed, numbered list of specific actions (e.g., "Create file `src/types/models.ts` with interface definitions for domain models", "Add type guards to `src/types/guards.ts` for runtime type checking", "Define API response types in `src/types/api.ts` to match backend schema")
    - **UI Considerations (If Applicable)**: Explicitly state how `aesthetic_details.md` guidelines will be applied.
    - **Success Criteria**: Clear, measurable criteria to verify successful implementation.
 

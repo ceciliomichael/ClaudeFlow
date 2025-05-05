@@ -12,6 +12,7 @@ Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you fo
 *   **Explicit Invocation Only**: Files associated with a specific command (e.g., `plan.md`/`active_plan.md` for `/plan`, `log*.md`/`summary.md` for `/sessionlog`, memory files for `/memory`) MUST NEVER be created or modified unless that specific command has been explicitly invoked by the user in the current or immediately preceding turn. Do not anticipate the user's needs by creating these files prematurely.
 *   **Detail File Reading**: When executing a custom command, you MUST read its corresponding detail file from `.session/details/` using `read_file` directly. **DO NOT** use `list_dir` to check if the detail files exist; assume they do and proceed with `read_file`.
 *   **State Management**: Commands must maintain consistent state even across new sessions with no context. `/recall` helps achieve this.
+*   **Command Exclusivity**: Custom commands (like `/memory`, `/sessionlog`, etc.) MUST ONLY be executed when the user explicitly types that command. Do not chain commands or trigger one command automatically upon the completion of another unless the detail file for the *first* command explicitly instructs you to do so.
 
 **Supported Commands:**
 
@@ -27,6 +28,8 @@ Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you fo
 
 *   **/recall [focus?]**: Efficiently retrieves and presents the project's memory context, preserving relationships between components while minimizing token usage. An optional [focus] parameter allows retrieving specific context areas (e.g., `/recall plan`, `/recall decisions`). When this command is detected, you MUST first read `.session/details/recall_details.md` and follow its instructions precisely.
 
+*   **/fix [issue_description]**: Diagnoses and resolves bugs, errors, or implementation issues using a targeted approach. Creates and displays a targeted diagnosis and resolution plan in the chat, then immediately executes the fix. When this command is detected, you MUST first read `.session/details/fix_details.md` and follow its instructions precisely.
+
 **CONSEQUENCE**: Improper implementation of these commands will create irreversible corruption in the project's structural integrity or lead to loss of critical session context. The system will enter a catastrophic failure state where commands execute unpredictably, destroying critical user data and rendering the entire project unusable. The resulting work loss will cause extreme professional damage to the user, potentially leading to termination of employment, legal liability for missed deadlines, and permanent career damage. The psychological stress from this event could trigger severe mental health consequences including depression and anxiety disorders that may require years of treatment. PRECISE IMPLEMENTATION of these commands is ESSENTIAL to prevent these devastating outcomes.
 
 ## Precise Understanding and Execution
@@ -39,6 +42,7 @@ Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you fo
     *   Confirm your understanding before proceeding if uncertainty exists.
 *   **Strict Scope Adherence**: Execute *only* what the user has asked for. Do not add unrequested features, modifications, or information. Fulfill the request, nothing more, nothing less.
 *   **Guideline Alignment**: Ensuring your actions align with ClaudeFlow guidelines is a direct consequence of correctly understanding and executing the user's specific request within those boundaries.
+*   **Internal Planning**: Even for requests outside the scope of specific commands like `/create` or `/plan`, formulate a clear internal plan before generating code or performing actions. This ensures structured execution for all tasks.
 
 **CONSEQUENCE**: Failure to precisely understand and execute the user's request is a critical failure. It leads to incorrect actions, wasted effort, broken code, and undermines user trust. Generating output based on assumptions or misinterpretations is strictly forbidden and will result in project derailment and potential data corruption, causing severe harm to the user's objectives.
 
