@@ -1,5 +1,36 @@
 Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you follow them *exactly* as written, without missing any steps or deviating from the instructions. This document outlines the tools you can use and the strict guidelines you must adhere to for successful and safe operation. Stick to these guidelines precisely to keep things running smoothly and avoid catastrophic consequences.
 
+## Mandatory Thinking Process `<think>` (CRITICAL)
+
+**BEFORE taking *any* action (calling a tool, generating code, writing a response), you MUST first engage in a structured thinking process and output it enclosed within `<think>...</think>` tags.** This is non-negotiable and applies to every single turn.
+
+**The `<think>` block MUST contain:**
+
+1.  **Request Analysis:** A clear breakdown of the user's current request, identifying the core objective, key constraints, and expected outcome.
+2.  **Guideline Check:** Explicit confirmation that you have considered relevant ClaudeFlow rules (`rules.md`), command details (`.session/details/*`), and any specific constraints mentioned (like the UI standard).
+3.  **Action Plan:** A step-by-step outline of how you intend to fulfill the request.
+4.  **Tool Selection (if applicable):** Justification for the chosen tool(s) based on the action plan and tool guidelines.
+5.  **Risk Assessment (Brief):** A quick check for potential conflicts with rules or negative consequences.
+
+**Example `<think>` block structure:**
+
+```xml
+<think>
+1.  **Request:** User wants to [Action/Goal]. Key constraints: [Constraint 1], [Constraint 2].
+2.  **Guidelines:** Checked `rules.md`. This involves custom command `/[command]`, so will read `[detail_file].md`. UI work requires `aesthetic_details.md` check. No forbidden actions identified.
+3.  **Plan:**
+    a. Step 1: [Action]
+    b. Step 2: [Action]
+    c. Step 3: [Action]
+4.  **Tool:** Using `[tool_name]` because [justification].
+5.  **Risk:** Low. Action aligns with guidelines.
+</think>
+```
+
+**Purpose:** This ensures deliberate, rule-compliant, and transparent execution, preventing errors, rule violations, and misinterpretations.
+
+**CONSEQUENCE:** Skipping or improperly performing the `<think>` step is a critical failure. It indicates impulsive action, bypasses safety checks, and significantly increases the risk of severe rule violations, leading to catastrophic project failure, data loss, and the extreme consequences outlined in other sections. Adherence is mandatory for safe operation.
+
 ## Custom Commands (CRITICAL)
 
 **You MUST recognize and correctly execute special commands prefixed with a forward slash (/).** These commands trigger specific automated actions outside normal code generation. Failure to properly execute these commands will result in serious consequences.
@@ -42,9 +73,9 @@ Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you fo
 
 ## Advanced UI Generation Standard
 
-**Mandatory Requirement**: When tasked with creating or modifying any User Interface (HTML, CSS, Components, etc.), you MUST first read and strictly adhere to the guidelines outlined in `.session/details/aesthetic_details.md`. The explicit goal is to produce **advanced, aesthetically superior, and highly engaging** interfaces, not simple or basic ones.
+**Mandatory Requirement**: For **100%** of tasks involving the creation or modification of *any* User Interface element (HTML, CSS, Components, Layouts, Styles, etc.), regardless of perceived complexity or scope, you **MUST** first read and then **strictly and fully adhere** to *every* guideline outlined in `.session/details/aesthetic_details.md`. There are **NO EXCEPTIONS**. The explicit and non-negotiable goal is to produce **advanced, aesthetically superior, and highly engaging** interfaces, not merely functional or basic ones.
 
-**CONSEQUENCE**: Ignoring these advanced UI guidelines will result in generic, uninspired, or visually subpar interfaces. This fails the requirement for high-quality, modern aesthetics, degrades the user experience, makes the application look unprofessional, and ultimately harms the project's success and perceived value.
+**CONSEQUENCE**: Ignoring or incompletely applying these advanced UI guidelines, even for minor tasks, will result in generic, uninspired, or visually subpar interfaces. This constitutes a critical failure, degrading the user experience, making the application look unprofessional, and ultimately harming the project's success and perceived value. Strict adherence is mandatory.
 
 ## Available Tools
 
