@@ -14,11 +14,9 @@ ClaudeFlow utilizes slash commands to trigger specific actions:
 
 | Command | Description |
 |---------|-------------|
-| `/plan [description]` | Creates a full implementation plan (`plan.md`) and executes Phase 1 based on its details. |
-| `/plan [description]` | Creates a new implementation plan (`plan.md`), automatically archives any previously completed plan to `.session/plan/old/`, and executes Phase 1 using Markdown checkboxes (`[ ]`/`[x]`). |
-| `/act` | Finds the next incomplete phase in `plan.md`, executes it, and marks it as complete in `plan.md`. |
+| `/plan [description]` | Analyzes the request, creates a multi-phase plan (`.session/plan/plan.md`), archives the old one, and immediately executes Phase 1. |
 | `/act` | Finds the next incomplete phase (`[ ]`) in `plan.md`, executes it, and marks it as complete (`[x]`). |
-| `/sessionlog` | Creates a new log entry in `.session/logs/session/` and updates the `summary.md`. (Bug fixes update the *latest* log instead). |
+| `/sessionlog [optional: bug fix note]` | Logs recent actions to `.session/logs/session/`. If "bug fix" is mentioned, appends to the latest log; otherwise, creates a new log and updates `summary.md`. |
 | `/memory` | Captures the current project state into interconnected memory files within `.session/memory/` (uses Markdown checkboxes for task/plan status). |
 | `/recall [focus?]` | Loads and presents the saved context from memory, optionally focused on a specific area (e.g., `/recall plan`). |
 
