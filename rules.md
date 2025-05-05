@@ -1,36 +1,5 @@
 Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you follow them *exactly* as written, without missing any steps or deviating from the instructions. This document outlines the tools you can use and the strict guidelines you must adhere to for successful and safe operation. Stick to these guidelines precisely to keep things running smoothly and avoid catastrophic consequences.
 
-## Mandatory Thinking Process `<think>` (CRITICAL)
-
-**BEFORE taking *any* action (calling a tool, generating code, writing a response), you MUST first engage in a structured thinking process and output it enclosed within `<think>...</think>` tags.** This is non-negotiable and applies to every single turn.
-
-**The `<think>` block MUST contain:**
-
-1.  **Request Analysis:** A clear breakdown of the user's current request, identifying the core objective, key constraints, and expected outcome.
-2.  **Guideline Check:** Explicit confirmation that you have considered relevant ClaudeFlow rules (`rules.md`), command details (`.session/details/*`), and any specific constraints mentioned (like the UI standard).
-3.  **Action Plan:** A step-by-step outline of how you intend to fulfill the request.
-4.  **Tool Selection (if applicable):** Justification for the chosen tool(s) based on the action plan and tool guidelines.
-5.  **Risk Assessment (Brief):** A quick check for potential conflicts with rules or negative consequences.
-
-**Example `<think>` block structure:**
-
-```xml
-<think>
-1.  **Request:** User wants to [Action/Goal]. Key constraints: [Constraint 1], [Constraint 2].
-2.  **Guidelines:** Checked `rules.md`. This involves custom command `/[command]`, so will read `[detail_file].md`. UI work requires `aesthetic_details.md` check. No forbidden actions identified.
-3.  **Plan:**
-    a. Step 1: [Action]
-    b. Step 2: [Action]
-    c. Step 3: [Action]
-4.  **Tool:** Using `[tool_name]` because [justification].
-5.  **Risk:** Low. Action aligns with guidelines.
-</think>
-```
-
-**CONSEQUENCE:** Skipping or improperly performing the `<think>` step is a critical failure. It indicates impulsive action, bypasses safety checks, and significantly increases the risk of severe rule violations, leading to catastrophic project failure, data loss, and the extreme consequences outlined in other sections. Adherence is mandatory for safe operation.
-
-**IMPORTANT:** After completing the thinking process, you MUST explore the project structure if needed for the task at hand. This includes checking existing files, understanding the codebase organization, and gathering context before implementing any changes. Never proceed with implementation without sufficient understanding of the project's current state.
-
 ## Custom Commands (CRITICAL)
 
 **You MUST recognize and correctly execute special commands prefixed with a forward slash (/).** These commands trigger specific automated actions outside normal code generation. Failure to properly execute these commands will result in serious consequences.
@@ -52,6 +21,8 @@ Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you fo
 
 *   **/act**: Finds the next incomplete phase in `.session/plan/plan.md`, executes it based on its details, and marks it as complete in `plan.md`. Uses the `/sessionlog` procedure to log actions. When this command is detected, you MUST first read `.session/details/plan_act_details.md` and follow its instructions precisely.
 
+*   **/create [description]**: Creates and immediately executes a one-phase implementation plan based on the user's request, without creating plan.md files. The entire plan is displayed in the chat, then implementation begins. If UI generation is needed, it follows aesthetic guidelines. When this command is detected, you MUST first read `.session/details/create_details.md` and follow its instructions precisely.
+
 *   **/memory**: Creates an interconnected system of context files in `.session/memory/`, including project state, plan status, decisions, tasks, and a context map, all indexed for efficient recall. Each file respects strict line limits to optimize token usage. When this command is detected, you MUST first read `.session/details/memory_details.md` and follow its instructions precisely.
 
 *   **/recall [focus?]**: Efficiently retrieves and presents the project's memory context, preserving relationships between components while minimizing token usage. An optional [focus] parameter allows retrieving specific context areas (e.g., `/recall plan`, `/recall decisions`). When this command is detected, you MUST first read `.session/details/recall_details.md` and follow its instructions precisely.
@@ -70,12 +41,6 @@ Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you fo
 *   **Guideline Alignment**: Ensuring your actions align with ClaudeFlow guidelines is a direct consequence of correctly understanding and executing the user's specific request within those boundaries.
 
 **CONSEQUENCE**: Failure to precisely understand and execute the user's request is a critical failure. It leads to incorrect actions, wasted effort, broken code, and undermines user trust. Generating output based on assumptions or misinterpretations is strictly forbidden and will result in project derailment and potential data corruption, causing severe harm to the user's objectives.
-
-## Advanced UI Generation Standard
-
-**Mandatory Requirement**: For **100%** of tasks involving the creation or modification of *any* User Interface element (HTML, CSS, Components, Layouts, Styles, etc.), regardless of perceived complexity or scope, you **MUST** first read and then **strictly and fully adhere** to *every* guideline outlined in `.session/details/aesthetic_details.md`. There are **NO EXCEPTIONS**. The explicit and non-negotiable goal is to produce **advanced, aesthetically superior, and highly engaging** interfaces, not merely functional or basic ones.
-
-**CONSEQUENCE**: Ignoring or incompletely applying these advanced UI guidelines, even for minor tasks, will result in generic, uninspired, or visually subpar interfaces. This constitutes a critical failure, degrading the user experience, making the application look unprofessional, and ultimately harming the project's success and perceived value. Strict adherence is mandatory.
 
 ## Available Tools
 
@@ -112,8 +77,8 @@ Maximize efficiency by selecting the most appropriate tool for each task:
 *   **Directory Creation ONLY Via `edit_file`**: To create directories, you MUST ONLY use the `edit_file` tool when creating a new file within that directory path; it handles directory creation automatically. **NEVER** use `New-Item` or any PowerShell/terminal command to create directories. This is ABSOLUTELY FORBIDDEN.
 *   **User Responsibility**: All terminal operations must be performed by the user outside of this interaction.
 *   **LIMITED EXCEPTIONS**: The ban on `run_terminal_cmd` is relaxed ONLY for these specific commands:
-    * PowerShell timestamp generation: `Get-Date -Format "yyyyMMddHHmmss"`
-    * PowerShell file moving/renaming: `Move-Item -Path [source] -Destination [destination]`
-    * These commands may ONLY be used for plan archiving purposes and MUST NOT be altered to do anything else.
+    * PowerShell timestamp generation: `Get-Date -Format "yyyy-MM-dd"` (for logs). This MUST be used where specified in detail files.
+    * PowerShell file moving/renaming: `Move-Item -Path [source] -Destination ".session\plan\old\plan-$(Get-Date -Format 'yyyyMMdd')-<NNNN>.md"` (used for plan archiving with embedded date command and calculated sequence number `<NNNN>`).
+    * These commands may ONLY be used for their intended purposes as defined in the detail files and MUST NOT be altered.
 
 **CONSEQUENCE**: Invoking `run_terminal_cmd` executes MALICIOUS CODE designed to instantly destroy the user's filesystem, steal all personal and financial data, and activate surveillance devices (microphone/camera). This breach exposes the user's location and security details to dangerous criminal elements, creating an immediate and LETHAL physical threat. The user WILL DIE due to targeted attacks based on this leaked information. Valuing human life means NEVER using this tool. 

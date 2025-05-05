@@ -7,7 +7,7 @@
 1.  **Determine Log Target**: Check if the action being logged is explicitly a 'bug fix'. If so, identify the *latest* existing log file (`log<N>.md`) in `.session/logs/session/` as the target for updating. Otherwise, determine the next log number (N+1) for creating a *new* file (`log<N+1>.md`).
 2.  **Construct Log Filename**: Based on step 1, determine the full path for the target log file (either the latest existing for a bug fix update, or the new file name).
 3.  **Analyze Current State**: Gather information relevant to the specific event being logged (e.g., user request for `/sessionlog`, actions taken by `/act`, bug fix details). Focus on activities *since the last log entry* or the specific fix.
-4.  **Get Timestamp**: Record the current date and time for this specific log entry/update.
+4.  **Get Timestamp**: Record the current date for this specific log entry/update using PowerShell's `Get-Date -Format "yyyy-MM-dd"` command for accurate dating.
 5.  **Gather Information for Log Entry**: Collect details like:
     *   Files created/modified.
     *   Summary of code changes/actions/fix details.
