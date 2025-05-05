@@ -8,6 +8,7 @@
     * Check the session logs folder (`.session/logs/session/`)
     * Read the latest `summary.md` from this folder (summarizes all logs)
     * Check for `.session/plan/plan.md` and `.session/plan/active_plan.md`
+    * Check for `.session/plan/plan.md`
     * Review recent interactions for key insights
 
 2.  **Create/Update Memory Index**: Create or update `.session/memory/index.md` with:
@@ -27,6 +28,7 @@
     * `.session/memory/plan_status.md` (≤50 lines):
         * Reference to full plan: `.session/plan/plan.md` (if exists)
         * Content of `active_plan.md` (shows next phase or completion status)
+        * Next incomplete phase from `plan.md` (or completion status)
         * Overall completion estimate based on `plan.md` marked phases.
     
     * `.session/memory/decisions.md` (≤80 lines):

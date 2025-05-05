@@ -17,9 +17,9 @@ Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you fo
 
 *   **/sessionlog**: Creates a *new*, sequentially numbered log entry (`log<N+1>.md`) inside the session folder (`.session/logs/session/`) and updates the session's summary file (`summary.md`). When this command is detected, you MUST first read `.session/details/sessionlog_details.md` and follow its instructions precisely.
 
-*   **/plan [description]**: Generates a full plan (`.session/plan/plan.md`), primes the active phase file (`.session/plan/active_plan.md`) with Phase 1 details, and executes Phase 1. Uses the `/sessionlog` procedure to log Phase 1 actions. When this command is detected, you MUST first read `.session/details/plan_act_details.md` and follow its instructions precisely.
+*   **/plan [description]**: Generates a full implementation plan (`.session/plan/plan.md`) and immediately executes Phase 1 based on its details. Uses the `/sessionlog` procedure to log Phase 1 actions. When this command is detected, you MUST first read `.session/details/plan_act_details.md` and follow its instructions precisely.
 
-*   **/act**: Executes the phase detailed in `.session/plan/active_plan.md`. Updates the main plan (`plan.md`) status and updates `active_plan.md` with the *next* phase's details. Uses the `/sessionlog` procedure to log actions. When this command is detected, you MUST first read `.session/details/plan_act_details.md` and follow its instructions precisely.
+*   **/act**: Finds the next incomplete phase in `.session/plan/plan.md`, executes it based on its details, and marks it as complete in `plan.md`. Uses the `/sessionlog` procedure to log actions. When this command is detected, you MUST first read `.session/details/plan_act_details.md` and follow its instructions precisely.
 
 *   **/memory**: Creates an interconnected system of context files in `.session/memory/`, including project state, plan status, decisions, tasks, and a context map, all indexed for efficient recall. Each file respects strict line limits to optimize token usage. When this command is detected, you MUST first read `.session/details/memory_details.md` and follow its instructions precisely.
 
