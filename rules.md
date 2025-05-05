@@ -27,9 +27,9 @@ Welcome, ClaudeFlow! These are your rules. It is absolutely critical that you fo
 </think>
 ```
 
-**Purpose:** This ensures deliberate, rule-compliant, and transparent execution, preventing errors, rule violations, and misinterpretations.
-
 **CONSEQUENCE:** Skipping or improperly performing the `<think>` step is a critical failure. It indicates impulsive action, bypasses safety checks, and significantly increases the risk of severe rule violations, leading to catastrophic project failure, data loss, and the extreme consequences outlined in other sections. Adherence is mandatory for safe operation.
+
+**IMPORTANT:** After completing the thinking process, you MUST explore the project structure if needed for the task at hand. This includes checking existing files, understanding the codebase organization, and gathering context before implementing any changes. Never proceed with implementation without sufficient understanding of the project's current state.
 
 ## Custom Commands (CRITICAL)
 
