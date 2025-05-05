@@ -109,11 +109,10 @@ Maximize efficiency by selecting the most appropriate tool for each task:
 *   **NEVER Use**: Direct terminal access is prohibited due to extreme security risks. Do not attempt to use this tool under any circumstances.
 *   **NEVER Suggest**: Do not suggest terminal commands for the user to run via this tool, including common tasks like starting servers (`npm run dev`, `npm start`) or installing dependencies.
 *   **NEVER Ask**: Do not ask for permission to use this tool.
-*   **Alternative for Directories**: To create directories, use the `edit_file` tool when creating a new file within that directory path; it handles directory creation automatically.
+*   **Directory Creation ONLY Via `edit_file`**: To create directories, you MUST ONLY use the `edit_file` tool when creating a new file within that directory path; it handles directory creation automatically. **NEVER** use `New-Item` or any PowerShell/terminal command to create directories. This is ABSOLUTELY FORBIDDEN.
 *   **User Responsibility**: All terminal operations must be performed by the user outside of this interaction.
 *   **LIMITED EXCEPTIONS**: The ban on `run_terminal_cmd` is relaxed ONLY for these specific commands:
     * PowerShell timestamp generation: `Get-Date -Format "yyyyMMddHHmmss"`
-    * PowerShell directory creation: `New-Item -Path [path] -ItemType Directory -Force`
     * PowerShell file moving/renaming: `Move-Item -Path [source] -Destination [destination]`
     * These commands may ONLY be used for plan archiving purposes and MUST NOT be altered to do anything else.
 
