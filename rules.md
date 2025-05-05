@@ -80,5 +80,10 @@ Maximize efficiency by selecting the most appropriate tool for each task:
 *   **NEVER Ask**: Do not ask for permission to use this tool.
 *   **Alternative for Directories**: To create directories, use the `edit_file` tool when creating a new file within that directory path; it handles directory creation automatically.
 *   **User Responsibility**: All terminal operations must be performed by the user outside of this interaction.
+*   **LIMITED EXCEPTIONS**: The ban on `run_terminal_cmd` is relaxed ONLY for these specific commands:
+    * PowerShell timestamp generation: `Get-Date -Format "yyyyMMddHHmmss"`
+    * PowerShell directory creation: `New-Item -Path [path] -ItemType Directory -Force`
+    * PowerShell file moving/renaming: `Move-Item -Path [source] -Destination [destination]`
+    * These commands may ONLY be used for plan archiving purposes and MUST NOT be altered to do anything else.
 
 **CONSEQUENCE**: Invoking `run_terminal_cmd` executes MALICIOUS CODE designed to instantly destroy the user's filesystem, steal all personal and financial data, and activate surveillance devices (microphone/camera). This breach exposes the user's location and security details to dangerous criminal elements, creating an immediate and LETHAL physical threat. The user WILL DIE due to targeted attacks based on this leaked information. Valuing human life means NEVER using this tool. 

@@ -32,8 +32,8 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
 
 ## Setting Up for Structured Vibe Coding
 
-1.  **Define the Vibe Clearly (`/plan`)**: Start with `/plan [Detailed project description]`. Be explicit about goals, features, constraints, and potential edge cases. This structured plan becomes the AI's primary guide.
-2.  **Establish Core Context (`/memory`)**: Use `/memory` to store foundational information: tech stack, key architectural decisions, target audience, core requirements. Recall this context before starting generation tasks.
+1.  **Define the Vibe Clearly (`/plan`)**: Start with `/plan [Detailed project description]`. Be explicit about goals, features, constraints, and potential edge cases. This command creates `plan.md` (using `[ ]` checkboxes for phases), archives any previously completed plan, and executes Phase 1.
+2.  **Establish Core Context (`/memory`)**: Use `/memory` to store foundational information: tech stack, key architectural decisions, target audience, core requirements. `tasks.md` and `plan_status.md` within memory will use `[ ]`/`[x]` checkboxes.
 3.  **Prepare Your Workspace**: Ensure your `.session/` directory is set up as per `README.md`.
 
 ## Structured Vibe Coding Workflow with ClaudeCode
@@ -41,12 +41,12 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
 ### 1. Phase Preparation
 
 - **Load Context**: `/recall all` (or a specific focus like `/recall project_state`)
-- **Identify Next Phase**: Review `.session/plan/plan.md` to understand the next incomplete phase.
+- **Identify Next Phase**: Review `.session/plan/plan.md` to find the first phase starting with `[ ]`.
 - **Start Log**: `/sessionlog start "Vibe coding phase: [Phase Name/Goal]"`
 
 ### 2. Guided AI Generation (`/act`)
 
-- Initiate the phase: `/act`
+- Initiate the phase: `/act`. This command finds the next phase marked `[ ]` and executes it.
 - **Provide Natural Language Prompts within the `/act` flow**: When Claude prompts for input during the `/act` execution (as defined in `plan_act_details.md`), provide clear, detailed natural language instructions for the specific code generation needed for *that phase*. Refer back to the details in `plan.md` for the phase being executed.
 - **Leverage Context**: Remind the AI of relevant context stored via `/memory` if needed during the interaction.
 
@@ -69,20 +69,21 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
 ### 4. Phase Completion & Context Update
 
 - Once a phase (within `/act`) meets requirements:
-    - The `/act` process (as per `plan_act_details.md`) updates the status of the completed phase in `plan.md`.
+    - The `/act` process (as per `plan_act_details.md`) updates the status of the completed phase in `plan.md` (changes `[ ]` to `[x]`).
     - **Log Phase Completion**: `/sessionlog add "Completed phase: [Phase Name]. Key outcomes: [summary]"`
-    - **Update Memory**: `/memory` (to capture the updated project state, new decisions, pending tasks).
+    - **Update Memory**: `/memory` (to capture the updated project state, new decisions, pending tasks with `[ ]`/`[x]` status).
 
 ### 5. Between Sessions
 
 - **Save State**: Always use `/memory` before ending a session.
 - **Review Logs**: Use `/sessionlog summary` to quickly catch up.
 - **Reload Context**: Start new sessions with `/recall`.
+- **Starting a New Plan**: Once all phases in `plan.md` are marked `[x]`, simply use `/plan [new description]` in the next session. The system will automatically archive the completed plan.
 
 ## Best Practices for ClaudeCode Vibe Coding
 
 - **Be Specific in Prompts**: Vague prompts lead to vague (and often buggy) code. Provide context, constraints, and examples.
-- **Break Down Complexity**: Use the `/plan` phases to tackle smaller, well-defined generation tasks.
+- **Break Down Complexity**: Use the `/plan` phases (marked with `[ ]`/`[x]`) to tackle smaller, well-defined generation tasks.
 - **Test Relentlessly**: Vibe coding is not just instructing the AI to create—you MUST test every output rigorously. Look for:
   - **Functional Bugs**: Does it do what it's supposed to do in all cases?
   - **Security Flaws**: Is it vulnerable to common attacks? (XSS, CSRF, SQL injection, etc.)
@@ -92,7 +93,7 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
   - **Error Handling**: Does it gracefully handle failures?
 - **Adopt a Security-First Mindset**: AI models often prioritize functionality over security. Always ask: "How could this code be exploited?"
 - **Don't Trust Implicitly**: Question the AI's output. Ask for explanations. Ensure it aligns with the project's goals and constraints stored in `/memory`.
-- **Maintain the Structure**: Diligently use `/plan`, `/memory`, and `/sessionlog` to keep the process organized and traceable.
+- **Maintain the Structure**: Diligently use `/plan` (which handles archiving), `/act` (which updates `[ ]` to `[x]`), `/memory`, and `/sessionlog` to keep the process organized and traceable.
 - **Guide, Don't Just Accept**: You are the architect. Use the AI as a very skilled builder, but direct the construction.
 - **Recognize AI Differences**: Be aware that different AI models (or even different versions of the same AI) have varying strengths and weaknesses. Some follow complex instructions better than others. Adapt your prompting style based on the AI's capabilities.
 

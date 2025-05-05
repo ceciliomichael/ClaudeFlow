@@ -15,9 +15,11 @@ ClaudeFlow utilizes slash commands to trigger specific actions:
 | Command | Description |
 |---------|-------------|
 | `/plan [description]` | Creates a full implementation plan (`plan.md`) and executes Phase 1 based on its details. |
+| `/plan [description]` | Creates a new implementation plan (`plan.md`), automatically archives any previously completed plan to `.session/plan/old/`, and executes Phase 1 using Markdown checkboxes (`[ ]`/`[x]`). |
 | `/act` | Finds the next incomplete phase in `plan.md`, executes it, and marks it as complete in `plan.md`. |
+| `/act` | Finds the next incomplete phase (`[ ]`) in `plan.md`, executes it, and marks it as complete (`[x]`). |
 | `/sessionlog` | Creates a new log entry in `.session/logs/session/` and updates the `summary.md`. (Bug fixes update the *latest* log instead). |
-| `/memory` | Captures the current project state into interconnected memory files within `.session/memory/`. |
+| `/memory` | Captures the current project state into interconnected memory files within `.session/memory/` (uses Markdown checkboxes for task/plan status). |
 | `/recall [focus?]` | Loads and presents the saved context from memory, optionally focused on a specific area (e.g., `/recall plan`). |
 
 ## Directory Structure
@@ -27,9 +29,9 @@ The system relies on the following structure within the `.session` directory:
 ```
 .session/
 ├── details/              # Detailed instructions for *how* commands execute
-│   ├── plan_act_details.md     # Logic for /plan and /act
+│   ├── plan_act_details.md     # Logic for /plan and /act (includes archiving)
 │   ├── sessionlog_details.md # Logic for /sessionlog
-│   ├── memory_details.md       # Logic for /memory
+│   ├── memory_details.md       # Logic for /memory (uses checkboxes, Mermaid maps)
 │   ├── recall_details.md       # Logic for /recall
 │   └── aesthetic_details.md    # Guidelines for advanced UI generation
 ├── logs/
@@ -40,12 +42,14 @@ The system relies on the following structure within the `.session` directory:
 ├── memory/               # Stores context snapshots for persistence
 │   ├── index.md          # Overview and links to other memory files
 │   ├── project_state.md  # High-level project status, structure, tech
-│   ├── plan_status.md    # Current plan phase, overall progress
+│   ├── plan_status.md    # Current plan phases (with [ ]/[x] status)
 │   ├── decisions.md      # Log of key architectural/design decisions
-│   ├── tasks.md          # List of pending tasks
-│   └── context_map.md    # Visual map of component relationships
+│   ├── tasks.md          # List of pending tasks (with [ ]/[x] status)
+│   └── context_map.md    # Visual Mermaid diagram of component relationships
 └── plan/                 # Manages the implementation plan
     └── plan.md           # The complete, multi-phase implementation plan
+    ├── plan.md           # The *active* multi-phase implementation plan (using [ ]/[x])
+    └── old/              # Archive for completed plans (e.g., plan-YYYYMMDDHHMMSS.md)
 ```
 
 ## Core Systems
@@ -53,7 +57,9 @@ The system relies on the following structure within the `.session` directory:
 ### Planning System (`.session/plan/`)
 Provides a structured approach for complex projects:
 *   `/plan` creates `plan.md` (full plan) and executes Phase 1 directly from its details.
+*   `/plan` creates a new `plan.md` (using Markdown checkboxes `[ ]`/`[x]` for phases) and executes Phase 1. If a fully completed `plan.md` already exists, it's automatically archived to `.session/plan/old/` using a timestamped filename before the new plan is created.
 *   `/act` finds the next incomplete phase in `plan.md`, executes it based on its details, and updates its status in `plan.md`.
+*   `/act` finds the next incomplete phase (`[ ]`) in `plan.md`, executes it, and updates its checkbox status (`[x]`).
 *   Phases in `plan.md` include category tags (e.g., `(ui)`, `(api)`) for clarity.
 
 ### Logging System (`.session/logs/session/`)
@@ -65,6 +71,7 @@ Maintains a chronological record:
 ### Memory System (`.session/memory/`)
 Enables efficient context transfer between sessions:
 *   `/memory` captures the current state into multiple, focused files (project state, plan status, decisions, tasks, context map) with strict line limits for efficiency.
+*   `/memory` captures the current state. `plan_status.md` and `tasks.md` use Markdown checkboxes (`[ ]`/`[x]`) for status. `context_map.md` uses Mermaid syntax.
 *   `/recall` loads this structured context, presenting a cohesive briefing. `/recall [focus]` loads specific areas.
 
 ## Core Configuration and Guidelines
@@ -72,7 +79,7 @@ Enables efficient context transfer between sessions:
 ### `rules.md` (Primary Configuration)
 This file acts as the main instruction set for the AI, defining:
 *   The AI's persona and objectives.
-*   Available tools and constraints.
+*   Available tools and constraints (including limited exceptions for specific PowerShell commands for plan archiving).
 *   The list and basic descriptions of custom commands.
 *   Fundamental operational rules (file storage, command execution, detail reading).
 *   Consequences for rule violations.
@@ -88,12 +95,13 @@ Contains mandatory guidelines for generating **advanced, aesthetically superior 
 
 Based on practical testing, the following workflow provides the most reliable results:
 
-1.  **Initial Plan Creation**: Start with `/plan [description]`. This creates the plan and executes the first phase.
-2.  **Execute Subsequent Phases**: Use `/act` to execute the next available phase from `plan.md`.
+1.  **Initial Plan Creation**: Start with `/plan [description]`. This creates the plan (archiving any previously completed one) and executes the first phase (`[x] Phase 1...`).
+2.  **Execute Subsequent Phases**: Use `/act` repeatedly to execute the next available phase (`[ ] Phase N...`) until all phases are marked (`[x]`).
 3.  **Context Management**:
-    *   **Between Sessions**: Use `/memory`, start a new chat session, use `/recall`, then continue with `/act`. This minimizes hallucinations.
-    *   **Within a Session**: You can continue using `/act`, but be mindful of potential context window limitations or AI drift in very long sessions.
+    *   **Between Sessions**: Use `/memory`, start a new chat session, use `/recall`, then continue with `/act` or `/plan`.
+    *   **Within a Session**: Continue using `/act`, `/memory`, `/recall` as needed.
 4.  **Bug Fixing**: Use `/sessionlog` to append fix details to the latest log.
+5.  **Starting a New Plan**: Simply use `/plan [new description]`. The system will automatically archive the current `plan.md` if it's fully completed (`[x]` on all phases) before creating the new one.
 
 ## Extending ClaudeFlow: Adding Custom Commands
 

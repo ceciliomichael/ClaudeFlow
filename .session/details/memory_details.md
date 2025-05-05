@@ -27,9 +27,12 @@
     
     * `.session/memory/plan_status.md` (≤50 lines):
         * Reference to full plan: `.session/plan/plan.md` (if exists)
-        * Content of `active_plan.md` (shows next phase or completion status)
         * Next incomplete phase from `plan.md` (or completion status)
         * Overall completion estimate based on `plan.md` marked phases.
+        * Represent phase completion status using Markdown checkboxes (`[ ]` or `[x]`).
+        * List of phases from `plan.md` with status indicated by Markdown checkboxes (`[ ]` or `[x]`).
+        * Next incomplete phase highlighted or noted.
+        * Overall completion estimate (e.g., "3/5 phases complete").
     
     * `.session/memory/decisions.md` (≤80 lines):
         * Chronological list of key decisions
@@ -38,10 +41,11 @@
         * Impact on development direction
     
     * `.session/memory/tasks.md` (≤50 lines):
-        * Current pending tasks
-        * Organized by priority/category
+        * List of current pending tasks (use bullet points).
+        * Organized by priority/category (optional headings).
         * Status indicators
-        * Dependencies between tasks
+        * Use Markdown checkboxes (`[ ]` for pending, `[x]` for complete) for status.
+        * Dependencies between tasks (optional, e.g., `depends on #task_id`).
 
 4.  **Create Context Map File**: Create/update `.session/memory/context_map.md` (≤70 lines):
     * Visual ASCII/markdown relationship map
