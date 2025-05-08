@@ -24,7 +24,7 @@ While powerful, coding purely based on AI generation without structure can lead 
 
 ClaudeCode provides the structure and guardrails needed to harness the power of vibe coding effectively while mitigating its risks. It turns vibe coding from a potentially chaotic process into a structured, manageable, and reliable development methodology:
 
-1.  **Structured Planning (`/plan`, `.session/plan/`)**: Forces clear definition of goals and phases *before* generation, ensuring AI efforts are directed and comprehensive.
+1.  **Structured Planning (`/plan`, `/plancreate`, `.session/plan/`)**: Forces clear definition of goals, complexity assessment (to determine the appropriate number of phases or level of detail for single-phase plans), and phased breakdown *before* generation, ensuring AI efforts are directed and comprehensive.
 2.  **Contextual Memory (`/memory`, `.session/memory/`)**: Provides the AI with persistent, structured context (project state, decisions, tasks) beyond the immediate chat history, leading to more consistent and informed code generation.
 3.  **Traceability & Logging (`/sessionlog`, `.session/logs/`)**: Creates a clear audit trail of prompts, decisions, and generated outputs, making debugging and understanding the evolution of the codebase easier.
 4.  **Phased Execution (`/act`)**: Breaks down complex generation tasks into manageable steps, allowing for iterative review and refinement at each stage.
@@ -32,7 +32,9 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
 
 ## Setting Up for Structured Vibe Coding
 
-1.  **Define the Vibe Clearly (`/plan`)**: Start with `/plan [Detailed project description]`. Be explicit about goals, features, constraints, and potential edge cases. This command creates `plan.md` (using `[ ]` checkboxes for phases), archives any previously completed plan, and executes Phase 1.
+1.  **Define the Vibe Clearly (`/plan` or `/plancreate`)**:
+    *   For multi-phase projects: Start with `/plan [Detailed project description]`. Be explicit about goals, features, constraints, and potential edge cases. The system will guide the AI to assess complexity and structure an appropriate multi-phase `plan.md` (using `[ ]` checkboxes for phases), archive any previously completed plan, and execute Phase 1.
+    *   For single-phase tasks: Use `/plancreate [Detailed task description]` to generate a detailed plan in chat. The AI will assess complexity to ensure the plan's detail matches the task. This plan is then executed with `/create`.
 2.  **Establish Core Context (`/memory`)**: Use `/memory` to store foundational information: tech stack, key architectural decisions, target audience, core requirements. `tasks.md` and `plan_status.md` within memory will use `[ ]`/`[x]` checkboxes.
 3.  **Prepare Your Workspace**: Ensure your `.session/` directory is set up as per `README.md`.
 
@@ -50,9 +52,9 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
 - **Provide Natural Language Prompts within the `/act` flow**: When Claude prompts for input during the `/act` execution (as defined in `plan_act_details.md`), provide clear, detailed natural language instructions for the specific code generation needed for *that phase*. Refer back to the details in `plan.md` for the phase being executed.
 - **Leverage Context**: Remind the AI of relevant context stored via `/memory` if needed during the interaction.
 
-### 3. Iterative Refinement & Review (During `/act`)
+### 3. Iterative Refinement & Review (During `/act` or after `/create`)
 
-- **Rigorously Test Generated Code**: After the AI generates code within a phase, test it thoroughly across multiple dimensions:
+- **Rigorously Test Generated Code**: After the AI generates code within a phase (or after `/create` completes), test it thoroughly across multiple dimensions:
   - **Functionality Testing**: Ensure all features work as expected in typical usage scenarios
   - **Edge Case Testing**: Test with unusual or extreme inputs
   - **Security Analysis**: Actively look for security vulnerabilities (injection attacks, improper authentication, insecure data handling)
@@ -60,7 +62,8 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
   - **Cross-Browser/Device Testing**: Verify the solution works across required platforms
   - **Accessibility Testing**: Ensure the solution meets accessibility requirements
   - **Integration Testing**: Verify the new code works properly with existing components
-- **Provide Detailed Testing Feedback**: Tell the AI specifically what issues you found: *"The authentication function is vulnerable to SQL injection when special characters are used in the username", "The image loading fails on Safari", "The function crashes when given empty input"*
+  - **UI/UX Adherence (Critical)**: If UI work was involved, you MUST verify that it strictly adheres to all guidelines in `.session/details/aesthetic_details.md`. This is not optional.
+- **Provide Detailed Testing Feedback**: Tell the AI specifically what issues you found: *"The authentication function is vulnerable to SQL injection when special characters are used in the username", "The image loading fails on Safari", "The function crashes when given empty input", "The primary button's glassmorphism doesn't match the spec in aesthetic_details.md"*
 - **Require Security-First Thinking**: Ask the AI to explain potential security implications of its code during review
 - **Demand Iterative Fixes**: Vibe coding is not "generate and move on" but "generate, test, fix, test again"
 - **Log Key Decisions**: `/sessionlog add "Decision: Used pattern X for Y based on AI suggestion and testing."`
@@ -83,7 +86,8 @@ ClaudeCode provides the structure and guardrails needed to harness the power of 
 ## Best Practices for ClaudeCode Vibe Coding
 
 - **Be Specific in Prompts**: Vague prompts lead to vague (and often buggy) code. Provide context, constraints, and examples.
-- **Break Down Complexity**: Use the `/plan` phases (marked with `[ ]`/`[x]`) to tackle smaller, well-defined generation tasks.
+- **Break Down Complexity**: Use the `/plan` phases (marked with `[ ]`/`[x]`) to tackle smaller, well-defined generation tasks. The AI's complexity assessment during planning helps structure this appropriately. For `/plancreate`, ensure the single-phase plan's detail matches the assessed complexity.
+- **Enforce UI Standards**: For any UI generation, ensure the AI explicitly follows the `.session/details/aesthetic_details.md` guidelines. This is a non-negotiable part of the review process.
 - **Test Relentlessly**: Vibe coding is not just instructing the AI to create—you MUST test every output rigorously. Look for:
   - **Functional Bugs**: Does it do what it's supposed to do in all cases?
   - **Security Flaws**: Is it vulnerable to common attacks? (XSS, CSRF, SQL injection, etc.)

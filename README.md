@@ -16,6 +16,8 @@ ClaudeFlow utilizes slash commands to trigger specific actions:
 |---------|-------------|
 | `/plan [description]` | Analyzes the request, creates a multi-phase plan (`.session/plan/plan.md`), archives the old one, and immediately executes Phase 1. |
 | `/act` | Finds the next incomplete phase (`[ ]`) in `plan.md`, executes it, and marks it as complete (`[x]`). |
+| `/plancreate [description]` | Generates a detailed, single-phase implementation plan in chat (no files created). AI assesses complexity to determine plan detail. |
+| `/create [description?]` | Executes the pending plan from `/plancreate`. Optional description provides context. |
 | `/sessionlog [optional: bug fix note]` | Logs recent actions to `.session/logs/session/`. If "bug fix" is mentioned, appends to the latest log; otherwise, creates a new log and updates `summary.md`. |
 | `/memory` | Captures the current project state into interconnected memory files within `.session/memory/` (uses Markdown checkboxes for task/plan status). |
 | `/recall [focus?]` | Loads and presents the saved context from memory, optionally focused on a specific area (e.g., `/recall plan`). |
@@ -27,7 +29,9 @@ The system relies on the following structure within the `.session` directory:
 ```
 .session/
 ├── details/              # Detailed instructions for *how* commands execute
-│   ├── plan_act_details.md     # Logic for /plan and /act (includes archiving)
+│   ├── plan_act_details.md     # Logic for /plan and /act (includes archiving, complexity assessment)
+│   ├── plancreate_details.md # Logic for /plancreate (includes complexity assessment)
+│   ├── create_details.md       # Logic for /create
 │   ├── sessionlog_details.md # Logic for /sessionlog
 │   ├── memory_details.md       # Logic for /memory (uses checkboxes, Mermaid maps)
 │   ├── recall_details.md       # Logic for /recall
@@ -54,10 +58,9 @@ The system relies on the following structure within the `.session` directory:
 
 ### Planning System (`.session/plan/`)
 Provides a structured approach for complex projects:
-*   `/plan` creates `plan.md` (full plan) and executes Phase 1 directly from its details.
-*   `/plan` creates a new `plan.md` (using Markdown checkboxes `[ ]`/`[x]` for phases) and executes Phase 1. If a fully completed `plan.md` already exists, it's automatically archived to `.session/plan/old/` using a timestamped filename before the new plan is created.
-*   `/act` finds the next incomplete phase in `plan.md`, executes it based on its details, and updates its status in `plan.md`.
-*   `/act` finds the next incomplete phase (`[ ]`) in `plan.md`, executes it, and updates its checkbox status (`[x]`).
+*   `/plan [description]` initiates a multi-phase project. The AI first assesses the project's complexity to determine an appropriate number of phases. It then creates `plan.md` (full plan with `[ ]`/`[x]` checkboxes for phases) and executes Phase 1 directly from its details. If a fully completed `plan.md` already exists, it's automatically archived to `.session/plan/old/` using a timestamped filename before the new plan is created.
+*   `/plancreate [description]` is used for single-phase tasks. The AI assesses the request's complexity to ensure the generated plan (displayed in chat only) has an appropriate level of detail. This plan is then executed using the `/create` command.
+*   `/act` finds the next incomplete phase (`[ ]`) in an active `plan.md` (created by `/plan`), executes it based on its details, and updates its checkbox status to (`[x]`).
 *   Phases in `plan.md` include category tags (e.g., `(ui)`, `(api)`) for clarity.
 
 ### Logging System (`.session/logs/session/`)
@@ -80,21 +83,24 @@ This file acts as the main instruction set for the AI, defining:
 *   Available tools and constraints (including limited exceptions for specific PowerShell commands for plan archiving).
 *   The list and basic descriptions of custom commands.
 *   Fundamental operational rules (file storage, command execution, detail reading).
+*   **Mandatory UI Aesthetics**: Includes a critical section on the absolute requirement to follow `.session/details/aesthetic_details.md` for all UI work.
 *   Consequences for rule violations.
 *   **Intended Use**: Can serve as a `.cursorrules` file or similar mechanism.
 
 ### Detail Files (`.session/details/`)
-These files provide the mandatory, step-by-step execution logic for each custom command (`plan_act_details.md`, `sessionlog_details.md`, etc.). The AI *must* read the relevant detail file before executing any custom command.
+These files provide the mandatory, step-by-step execution logic for each custom command (`plan_act_details.md`, `plancreate_details.md`, `create_details.md`, `sessionlog_details.md`, etc.). The AI *must* read the relevant detail file before executing any custom command.
 
 ### Aesthetic Guidelines (`.session/details/aesthetic_details.md`)
-Contains mandatory guidelines for generating **advanced, aesthetically superior UI**. This file *must* be consulted by the AI (specifically during the `/act` command execution) whenever a plan phase involves UI creation or modification. The goal is modern, engaging, performant, and accessible interfaces, utilizing techniques like glassmorphism, advanced typography, microinteractions, and mobile-first responsive design.
+Contains **MANDATORY AND IMMUTABLE** guidelines for generating **advanced, aesthetically superior UI**. This file *must* be read and its principles rigorously applied by the AI whenever *any* command execution (especially `/plan`, `/act`, `/plancreate`, `/create`) involves UI creation, modification, or planning. This is enforced by the primary `rules.md` (or `.cursorrules`) and is not optional. The goal is modern, engaging, performant, and accessible interfaces, utilizing techniques like glassmorphism, advanced typography, microinteractions, and responsive design that makes full use of the viewport.
 
 ## Recommended Workflow
 
 Based on practical testing, the following workflow provides the most reliable results:
 
-1.  **Initial Plan Creation**: Start with `/plan [description]`. This creates the plan (archiving any previously completed one) and executes the first phase (`[x] Phase 1...`).
-2.  **Execute Subsequent Phases**: Use `/act` repeatedly to execute the next available phase (`[ ] Phase N...`) until all phases are marked (`[x]`).
+1.  **Initial Planning & Execution**:
+    *   **For multi-phase projects**: Start with `/plan [description]`. This assesses complexity, creates the plan (archiving any previously completed one), and executes the first phase (`[x] Phase 1...`).
+    *   **For single-phase tasks**: Use `/plancreate [description]` to generate a detailed plan in chat (complexity is assessed for appropriate detail). Then, use `/create` to execute this plan.
+2.  **Execute Subsequent Phases (for multi-phase plans)**: Use `/act` repeatedly to execute the next available phase (`[ ] Phase N...`) in `plan.md` until all phases are marked (`[x]`).
 3.  **Context Management**:
     *   **Between Sessions**: Use `/memory`, start a new chat session, use `/recall`, then continue with `/act` or `/plan`.
     *   **Within a Session**: Continue using `/act`, `/memory`, `/recall` as needed.

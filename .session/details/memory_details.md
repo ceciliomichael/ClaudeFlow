@@ -7,7 +7,6 @@
 1.  **Analyze Session Context**: 
     * Check the session logs folder (`.session/logs/session/`)
     * Read the latest `summary.md` from this folder (summarizes all logs)
-    * Check for `.session/plan/plan.md` and `.session/plan/active_plan.md`
     * Check for `.session/plan/plan.md`
     * Review recent interactions for key insights
 
@@ -46,6 +45,16 @@
         * Status indicators
         * Use Markdown checkboxes (`[ ]` for pending, `[x]` for complete) for status.
         * Dependencies between tasks (optional, e.g., `depends on #task_id`).
+    
+    * `.session/memory/active_files.md` (≤50 lines):
+        * List of most recently accessed/modified project files
+        * Files critical to current implementation phase
+        * Primary source files that define core functionality
+        * Configuration files necessary for project operation
+        * Paths should be relative to workspace root
+        * Brief description of each file's purpose (single line)
+        * Status (stable/being modified/pending implementation)
+        * Priority ranking (high/medium/low) for loading during recall
 
 4.  **Create Context Map File**: Create/update `.session/memory/context_map.md` (≤70 lines):
     * Visual ASCII/markdown relationship map
@@ -64,4 +73,4 @@
 
 6.  **Confirmation**: Notify the user that memory has been updated with efficient, interconnected context snapshots.
 
-**Goal**: Create a network of small, focused memory files that together provide complete contextual understanding when loaded, while individually remaining under token limits to avoid context overload. 
+**Goal**: Create a network of small, focused memory files that together provide complete contextual understanding when loaded, while individually remaining under token limits to avoid context overload. This network should facilitate efficient context persistence between commands and sessions. 
