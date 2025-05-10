@@ -27,7 +27,7 @@ When the user invokes the `/create [description?]` command, follow these steps p
 1.  **Dependency Installation (if planned)**: If the pending plan from `/plancreate` specified any new external dependencies:
     *   Retrieve the dependency list and planned installation commands from the plan details.
     *   For each dependency, provide the clear explanation (from the plan) in chat for why it is needed.
-    *   Use `run_terminal_cmd` to execute the planned installation command (e.g., `npm install [package_name]`). Install one package per command unless the plan specifies installing multiple related packages together.
+    *   Use `run_terminal_cmd` to execute the planned installation command (e.g., `npm install [package_name] [package_name2]`). Install one package per command unless the plan specifies installing multiple related packages together.
     *   Await user approval and successful execution of each command before proceeding to the next dependency or implementation step.
 2.  **Begin Implementation**: Start implementing the remaining plan steps in sequential order.
 3.  **Apply Aesthetic Guidelines (for UI Implementation)**: If UI/UX elements are involved, ensure their creation strictly follows the aesthetic guidelines from `.session/details/aesthetic_details.md`.

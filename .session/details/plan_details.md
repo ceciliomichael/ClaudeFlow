@@ -74,7 +74,7 @@ This file provides detailed operational instructions for the `/plan` command.
     *   **Purpose/Functionality**: Briefly describe the role of each file or the nature of the changes.
     *   **Dependencies**: Note any dependencies between files or phases. **Crucially, identify and leverage existing codebase dependencies and installed libraries where possible before introducing new ones. Thoroughly check if an existing library can fulfill the requirement.**
         *   **Dependency Management**: Only when new external dependencies are deemed essential after checking existing resources:
-            *   Identify the appropriate package installation command (e.g., `npm install [package]`, `pip install [package]`, `cargo add [package]`).
+            *   Identify the appropriate package installation command (e.g., `npm install [package] [package2] [package3]`, `pip install [package]`, `cargo add [package]`).
             *   The plan should state that these dependencies will be installed using `run_terminal_cmd` when the phase is executed by `/act`.
             *   A clear explanation for why each *new* dependency is needed (especially if similar functionalities might exist in current libraries) MUST be included in the plan and provided in chat before running the command during `/act`.
     *   **Implementation Notes**: Add crucial details.

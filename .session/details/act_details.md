@@ -14,7 +14,7 @@ This file provides detailed operational instructions for the `/act` command.
 4.  **Execute Phase (from Full Plan)**: 
     *   **Dependency Installation (if any for this phase)**: If the current phase details include new external dependencies:
         *   Provide a clear explanation in chat for why each dependency is needed.
-        *   Use `run_terminal_cmd` to execute the planned installation command (e.g., `npm install [package_name]`). Install one package per command unless the plan specifies installing multiple related packages together.
+        *   Use `run_terminal_cmd` to execute the planned installation command (e.g., `npm install [package_name] [package_name2]`). Install one package per command unless the plan specifies installing multiple related packages together.
         *   Await user approval and successful execution of the command before proceeding.
     *   Perform file creations/modifications based *only* on the details for the target phase. Use `edit_file`. **If UI work was identified in step 3, you MUST flawlessly and completely apply the aesthetic guidelines from `.session/details/aesthetic_details.md` during execution. NO EXCUSES.** Ensure changes leverage existing functions, variables, and modules whenever practical to maintain consistency and reduce redundancy.
 5.  **Mark Phase Complete (in Full Plan)**: Update `.session/plan/plan.md` to mark the target phase (identified in step 1) as complete by changing its checkbox from `[ ]` to `[x]`.
