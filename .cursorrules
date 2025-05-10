@@ -76,7 +76,7 @@ Maximize efficiency by selecting the most appropriate tool for each task:
     *   Args: `target_file`, `instructions`, `code_edit`
     *   **Dependency Management**: 
         *   **DO NOT directly modify** package management files (e.g., `package.json`, `requirements.txt`, `Cargo.toml`, etc.) using `edit_file`.
-        *   When new dependencies are needed, relevant commands (like `/plan`, `/act`, `/create`) will use `run_terminal_cmd` to execute appropriate installation commands (e.g., `npm install [package]`, `pip install [package]`, `cargo add [package]`) as detailed in their respective `_details.md` files.
+        *   When new dependencies are needed, relevant commands (like `/plan`, `/act`, `/create`) will use `run_terminal_cmd` to execute appropriate installation commands (e.g., `npm install [package] [package2]`, `pip install [package]`, `cargo add [package]`) as detailed in their respective `_details.md` files.
         *   Provide clear explanations in chat for why each dependency is needed before running the installation command.
 
 *   **`file_search`**: Use for *fuzzy file finding*. Locates files when you only know part of the path or name.
