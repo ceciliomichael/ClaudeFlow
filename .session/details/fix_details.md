@@ -1,83 +1,55 @@
 # /fix Command - Implementation Instructions
 
-When the user invokes the `/fix [issue_description]` command, follow these steps precisely to diagnose and resolve bugs, errors, or implementation issues:
+When the user invokes the `/fix [issue_description]` command, follow these steps to diagnose and resolve issues:
 
-## Step 1: Analyze and Diagnose the Issue
+## Step 1: Analyze the Issue
+1. **Parse Issue & Gather Context**:
+   - Analyze the user's description to understand the problem type, affected components, and symptoms
+   - Use `read_file`, `codebase_search`, or `grep_search` to examine relevant code
+   - Ask clarifying questions if needed
 
-1. **Parse the Issue Description**: Analyze the user's [issue_description] thoroughly to fully understand:
-   - The nature of the problem (bug, error, unexpected behavior, performance issue, etc.)
-   - Affected components, files, or functionalities
-   - Error messages or symptoms reported
-   - Expected vs. actual behavior
+2. **Find Root Cause**:
+   - Identify the most likely causes (logic, syntax, runtime errors, etc.)
+   - Determine which files need modification
 
-2. **Gather Context**:
-   - If context is unclear, ask targeted questions to better understand the issue
-   - Examine relevant files/code using appropriate tools (read_file, codebase_search, grep_search)
-   - Check for similar patterns or known issues in the codebase
+## Step 2: Create and Display Fix Plan in Chat
+1. **Create a Fix Plan with**:
+   - **Issue Summary**: Brief restatement of the problem
+   - **Root Cause**: Technical explanation of what's causing the issue
+   - **Fix Actions**: Specific steps to resolve the issue (files to modify, changes to make)
+   - **Verification Method**: How to confirm the fix works
 
-3. **Root Cause Analysis**:
-   - Identify the most likely root cause(s) of the issue
-   - Determine whether the issue is due to:
-     - Logic errors (incorrect algorithm implementation)
-     - Syntax errors (improper language usage)
-     - Runtime errors (exceptions, variable scope issues)
-     - Integration problems (component incompatibility)
-     - Configuration issues (incorrect settings)
-     - Missing components or dependencies
+2. **IMPORTANT: Display the entire plan in CHAT (not as a file)**:
+   - Use clear formatting with headers
+   - Be specific about files and changes
 
-## Step 2: Generate and Display Fix Plan
+## Step 3: Execute the Fix
+1. **Implement Changes**:
+   - Make precise edits using `edit_file`
+   - Maintain consistent code style
+   - Install dependencies if needed (with appropriate `run_terminal_cmd` usage)
 
-1. **Create Diagnostic Report and Fix Strategy**: Develop a comprehensive plan that includes:
-   - **Issue Summary**: Clear restatement of the problem with technical specificity
-   - **Root Cause Analysis**: Explanation of the underlying issue(s) identified
-   - **Fix Approach**: Strategy for resolving the problem with specific changes
-   - **Verification Method**: How the fix will be tested/confirmed to work
+2. **If UI Work Involved**:
+   - Read `.session/details/aesthetic_details.md`
+   - Explicitly acknowledge applying aesthetic guidelines
+   - Ensure all UI work follows the mandatory standards
 
-2. **Display the Fix Plan in Chat**: Present the entire plan directly in the chat (NOT as a file) with:
-   - **Title**: Brief, descriptive title for the fix
-   - **Issue Summary**: Concise problem statement
-   - **Diagnosis**: Technical explanation of what's causing the issue
-   - **Fix Actions**: Ordered, specific steps that will be taken to resolve the issue:
-     - Files to be modified
-     - Code changes to be made
-     - Configuration updates needed
-     - Dependencies to be added/updated (if applicable)
-   - **Verification**: How the success of the fix will be determined
+## Step 4: Log the Fix
+1. **Use `/sessionlog` Procedure with Bug Fix Flag**:
+   - Update the most recent log file (not create a new one)
+   - Clearly mark as "BUG FIX"
+   - Include issue, cause, solution, and files changed
 
-## Step 3: Execute the Fix Immediately
+## Step 5: Update Memory Files (If They Exist)
+1. **Check and Update**:
+   - Update `.session/memory/decisions.md` to document the fix
+   - Modify `.session/memory/project_state.md` if significant changes were made
+   - Add to `.session/memory/tasks.md` with completed status
 
-1. **Implement the Fix**:
-   - Make precise code/configuration changes using `edit_file`
-   - Modify only what's necessary to resolve the issue
-   - Ensure changes maintain code style consistency
-   - Add comments explaining the fix if the change isn't self-explanatory
+## Step 6: Provide Confirmation
+1. **Summarize the Fix**:
+   - What was changed and why
+   - How to verify it works
+   - Any future prevention tips
 
-2. **Minimize Side Effects**:
-   - Ensure fix doesn't introduce new issues
-   - Validate that changes don't break existing functionality
-   - Maintain backwards compatibility where appropriate
-
-## Step 4: Log the Fix Process
-
-1. Create a new session log using the `/sessionlog` procedure
-2. Document the issue that was fixed, diagnosis details, and implementation
-3. Add a "bug fix" tag to the log for proper categorization
-4. Update the session summary file to reflect this fix activity
-
-## Step 5: Provide Verification and Completion Confirmation
-
-1. **Explain the Fix**:
-   - Summarize what was changed and why
-   - Explain how the fix addresses the root cause
-   - Provide any necessary user instructions if the fix requires additional steps
-
-2. **Suggest Testing**:
-   - Advise the user on how to verify the fix works
-   - Suggest specific test cases if applicable
-   - Note any limitations or edge cases to be aware of
-
-3. **Future Prevention**:
-   - If appropriate, briefly suggest how similar issues might be prevented in the future
-   - Recommend any best practices that would help avoid recurrence
-
-**Remember**: The `/fix` command is specialized for surgical, targeted problem resolution. It should focus on accurate diagnosis followed by precise implementation of only what's needed to resolve the specific issue. 
+Remember: The `/fix` command requires diagnosis followed by precise, targeted implementation. Display the fix plan in chat before execution, and only update existing log files - never create new ones. 

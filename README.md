@@ -1,135 +1,300 @@
-> **Note**: ClaudeFlow is designed for use within AI-integrated IDEs (like Cursor). While the principles and structure can be adapted for other AI models, the system, commands, and workflows were primarily developed and tested with **Claude 3.7**, which is recommended for the optimal experience. See the `vibe-coding-guide.md` for tips on leveraging this system for structured AI-driven development (vibe coding).
+# ClaudeFlow: AI-Powered Project Management Framework
 
-# ClaudeFlow System
+> **IMPORTANT**: ClaudeFlow is optimized for AI-integrated IDEs like Cursor, specifically with **Claude 3.7**. While adaptable to other AI models, maximum effectiveness requires Claude's advanced context handling and reasoning capabilities.
 
-A sophisticated project management and execution system built around Claude AI, designed for seamless context retention, efficient planning, and methodical implementation of complex software projects.
+## What is ClaudeFlow?
 
-## Overview
+ClaudeFlow is a sophisticated framework that transforms how you interact with AI coding assistants, enabling structured, maintainable, and traceable software development. It provides:
 
-ClaudeFlow enhances Claude's capabilities with structured workflows, persistent memory, and methodical execution. Using custom commands and a well-defined file structure within the `.session` directory, it maintains project state, tracks progress, and ensures continuity between development sessions.
+- **Persistent context** across development sessions
+- **Structured planning** with complexity assessment
+- **Methodical execution** through phased implementation
+- **Automatic documentation** and progress tracking
 
-## Custom Commands
+## 🚀 Quick Start: Core Workflows
 
-ClaudeFlow utilizes slash commands to trigger specific actions:
+ClaudeFlow offers two primary workflows depending on project complexity:
 
-| Command | Description |
-|---------|-------------|
-| `/plan [description]` | Analyzes the request, creates a multi-phase plan (`.session/plan/plan.md`), archives the old one, and immediately executes Phase 1. |
-| `/act` | Finds the next incomplete phase (`[ ]`) in `plan.md`, executes it, and marks it as complete (`[x]`). |
-| `/plancreate [description]` | Generates a detailed, single-phase implementation plan in chat (no files created). AI assesses complexity to determine plan detail. |
-| `/create [description?]` | Executes the pending plan from `/plancreate`. Optional description provides context. |
-| `/sessionlog [optional: bug fix note]` | Logs recent actions to `.session/logs/session/`. If "bug fix" is mentioned, appends to the latest log; otherwise, creates a new log and updates `summary.md`. |
-| `/memory` | Captures the current project state into interconnected memory files within `.session/memory/` (uses Markdown checkboxes for task/plan status). |
-| `/recall [focus?]` | Loads and presents the saved context from memory, optionally focused on a specific area (e.g., `/recall plan`). |
+### 1. Multi-Phase Projects (Complex Tasks)
 
-## Directory Structure
+This workflow is ideal for larger features or entire projects that benefit from being broken down into multiple, manageable phases. It emphasizes robust context management between steps.
 
-The system relies on the following structure within the `.session` directory:
+1.  **Initiate Planning**:
+    *   Use `/plan [Your detailed project description]`
+    *   *Example*: `/plan Create a full-stack e-commerce platform with user authentication, product catalog, shopping cart, and Stripe integration.`
+    *   The AI will analyze the request, assess complexity, create a multi-phase plan in `.session/plan/plan.md`, and may execute the first phase.
+
+2.  **Execute First Phase (if not done by `/plan`) or Subsequent Phases**:
+    *   Use `/act`
+    *   The AI executes the current pending phase from `plan.md`.
+
+3.  **Preserve Context & Prepare for Next Phase (CRITICAL for optimal results)**:
+    *   After `/act` completes and you've reviewed the work:
+        1.  Use `/memory` to save the current project state, including progress on `plan.md`.
+        2.  **Start a new chat session** in your AI IDE (e.g., click the "+" button in Cursor, ensuring no files are attached to the new chat). This clears the immediate conversational context, allowing for a cleaner recall.
+        3.  In the new chat, use `/recall` (or `/recall all` for broader context). The AI will load the most relevant files and state from the `.session/memory/` directory.
+        4.  You are now ready for the next `/act`.
+
+4.  **Continue Executing Phases**:
+    *   Use `/act` to implement the next phase.
+    *   Repeat step 3 (Memory -> New Chat -> Recall) and step 4 (`/act`) for all remaining phases.
+
+5.  **Bug Fixing/Refinements**:
+    *   Use `/sessionlog Bug fix: [description of fix]` to document changes.
+
+### 2. Single-Phase Tasks (Simple, One-Shot Tasks)
+
+This workflow is designed for smaller, well-defined tasks that can be completed in a single implementation step.
+
+1.  **Generate a Focused Plan**:
+    *   Use `/plancreate [Your specific task description]`
+    *   *Example*: `/plancreate Add a dark mode toggle to the existing navbar component.`
+    *   The AI generates a detailed plan for this single task and displays it *in the chat*. No `plan.md` file is created.
+
+2.  **Execute the Plan**:
+    *   Use `/create`
+    *   The AI executes the pending plan from the chat.
+    *   Once completed, the task is done. This flow does not typically involve multiple `/act` calls or the new chat/recall sequence.
+
+3.  **Log Completion (Optional but Recommended)**:
+    *   `/sessionlog Completed: [Brief description of what was created]`
+
+## 🎮 Command Reference
+
+### Core Commands
+
+| Command                     | Purpose                                                                 | Example                                                                      | Best For                                             |
+| --------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `/plan [description]`       | Creates & may start multi-phase plan (`.session/plan/plan.md`)          | `/plan Build a full-stack e-commerce site`                                   | Complex projects, new large features                 |
+| `/act`                      | Executes next pending phase from `plan.md`                              | `/act`                                                                       | Step-by-step implementation of multi-phase plans   |
+| `/plancreate [description]` | Generates single-phase plan *in chat* (no file created)                 | `/plancreate Create a utility function to format dates`                      | Focused, single-objective tasks                      |
+| `/create`                   | Executes the single-phase plan previously generated by `/plancreate`      | `/create`                                                                    | Implementing the chat-based plan from `/plancreate`  |
+| `/memory`                   | Stores current project context, plan status, and decisions to disk      | `/memory`                                                                    | Preserving state, especially before a new chat/recall |
+| `/recall [focus?]`          | Loads stored context into a new chat session (e.g., `plan`, `all`)      | `/recall plan` or `/recall project_state`                                    | Resuming work, ensuring AI has up-to-date context    |
+| `/sessionlog [note?]`       | Records actions or bug fixes to session logs                            | `/sessionlog "Fixed user login bug (issue #123)"`                          | Documentation, decision tracking, bug fix notes    |
+
+### Command Usage Examples
+
+**Multi-Phase Project Workflow Example:**
 
 ```
-.session/
-├── details/              # Detailed instructions for *how* commands execute
-│   ├── plan_act_details.md     # Logic for /plan and /act (includes archiving, complexity assessment)
-│   ├── plancreate_details.md # Logic for /plancreate (includes complexity assessment)
-│   ├── create_details.md       # Logic for /create
-│   ├── sessionlog_details.md # Logic for /sessionlog
-│   ├── memory_details.md       # Logic for /memory (uses checkboxes, Mermaid maps)
-│   ├── recall_details.md       # Logic for /recall
-│   └── aesthetic_details.md    # Guidelines for advanced UI generation
-├── logs/
-│   └── session/          # Contains logs for the current session
-│       ├── log1.md       # Individual, sequential log entries
-│       ├── log2.md
-│       └── summary.md    # Aggregated summary of all logs in this session
-├── memory/               # Stores context snapshots for persistence
-│   ├── index.md          # Overview and links to other memory files
-│   ├── project_state.md  # High-level project status, structure, tech
-│   ├── plan_status.md    # Current plan phases (with [ ]/[x] status)
-│   ├── decisions.md      # Log of key architectural/design decisions
-│   ├── tasks.md          # List of pending tasks (with [ ]/[x] status)
-│   └── context_map.md    # Visual Mermaid diagram of component relationships
-└── plan/                 # Manages the implementation plan
-    └── plan.md           # The complete, multi-phase implementation plan
-    ├── plan.md           # The *active* multi-phase implementation plan (using [ ]/[x])
-    └── old/              # Archive for completed plans (e.g., plan-YYYYMMDDHHMMSS.md)
+# 1. Start new multi-phase project
+/plan Create a responsive dashboard with React, including authentication, data visualization, and admin features.
+# (AI creates plan.md and might execute Phase 1)
+
+# 2. If Phase 1 wasn't run, or to run Phase 2 after Phase 1 is complete:
+/act
+# (AI completes current phase. Review and test.)
+
+# 3. Preserve context and prepare for next phase
+/memory
+# --- Manually start a NEW CHAT in your IDE (e.g., Cursor: click '+', remove file attachments) ---
+/recall
+# (AI loads context from memory)
+
+# 4. Continue with the next phase
+/act
+# (AI completes next phase. Review and test. Repeat step 3 & 4 as needed)
+
+# Example: Fixing a bug discovered during testing
+/sessionlog Bug fix: User avatar not displaying due to incorrect API path.
 ```
 
-## Core Systems
+**Single-Phase Task Workflow Example:**
 
-### Planning System (`.session/plan/`)
-Provides a structured approach for complex projects:
-*   `/plan [description]` initiates a multi-phase project. The AI first assesses the project's complexity to determine an appropriate number of phases. It then creates `plan.md` (full plan with `[ ]`/`[x]` checkboxes for phases) and executes Phase 1 directly from its details. If a fully completed `plan.md` already exists, it's automatically archived to `.session/plan/old/` using a timestamped filename before the new plan is created.
-*   `/plancreate [description]` is used for single-phase tasks. The AI assesses the request's complexity to ensure the generated plan (displayed in chat only) has an appropriate level of detail. This plan is then executed using the `/create` command.
-*   `/act` finds the next incomplete phase (`[ ]`) in an active `plan.md` (created by `/plan`), executes it based on its details, and updates its checkbox status to (`[x]`).
-*   Phases in `plan.md` include category tags (e.g., `(ui)`, `(api)`) for clarity.
+```
+# 1. Generate plan for a small task
+/plancreate Add input validation to the contact form (email and phone number fields).
 
-### Logging System (`.session/logs/session/`)
-Maintains a chronological record:
-*   `/sessionlog`, `/plan`, and `/act` create sequential `log<N>.md` files.
-*   Bug fixes *append* to the latest log file instead of creating a new one.
-*   `summary.md` is updated with every new log entry, providing a concise overview of the session.
+# 2. Execute the plan
+/create
+# (AI implements the validation based on the plan in chat)
 
-### Memory System (`.session/memory/`)
-Enables efficient context transfer between sessions:
-*   `/memory` captures the current state into multiple, focused files (project state, plan status, decisions, tasks, context map) with strict line limits for efficiency.
-*   `/memory` captures the current state. `plan_status.md` and `tasks.md` use Markdown checkboxes (`[ ]`/`[x]`) for status. `context_map.md` uses Mermaid syntax.
-*   `/recall` loads this structured context, presenting a cohesive briefing. `/recall [focus]` loads specific areas.
+# 3. Log completion
+/sessionlog Completed: Added validation to contact form.
+```
 
-## Core Configuration and Guidelines
+## 📂 System Architecture
 
-### `rules.md` (Primary Configuration)
-This file acts as the main instruction set for the AI, defining:
-*   The AI's persona and objectives.
-*   Available tools and constraints (including limited exceptions for specific PowerShell commands for plan archiving).
-*   The list and basic descriptions of custom commands.
-*   Fundamental operational rules (file storage, command execution, detail reading).
-*   **Mandatory UI Aesthetics**: Includes a critical section on the absolute requirement to follow `.session/details/aesthetic_details.md` for all UI work.
-*   Consequences for rule violations.
-*   **Intended Use**: Can serve as a `.cursorrules` file or similar mechanism.
+ClaudeFlow uses a structured file system within `.session/` to maintain project state:
 
-### Detail Files (`.session/details/`)
-These files provide the mandatory, step-by-step execution logic for each custom command (`plan_act_details.md`, `plancreate_details.md`, `create_details.md`, `sessionlog_details.md`, etc.). The AI *must* read the relevant detail file before executing any custom command.
+### Planning System
+- **Multi-phase projects**: Uses `.session/plan/plan.md` with checkbox tracking (`[ ]` → `[x]`)
+- **Single-phase tasks**: Temporary plans in chat memory for immediate execution
+- **Complexity assessment**: AI analyzes requirements to determine appropriate plan structure
 
-### Aesthetic Guidelines (`.session/details/aesthetic_details.md`)
-Contains **MANDATORY AND IMMUTABLE** guidelines for generating **advanced, aesthetically superior UI**. This file *must* be read and its principles rigorously applied by the AI whenever *any* command execution (especially `/plan`, `/act`, `/plancreate`, `/create`) involves UI creation, modification, or planning. This is enforced by the primary `rules.md` (or `.cursorrules`) and is not optional. The goal is modern, engaging, performant, and accessible interfaces, utilizing techniques like glassmorphism, advanced typography, microinteractions, and responsive design that makes full use of the viewport.
+### Memory System
+- **Project state**: High-level status, architecture, decisions
+- **Plan status**: Current progress through implementation phases
+- **Task tracking**: Pending and completed work items
+- **Context map**: Visualization of component relationships
 
-## Recommended Workflow
+### Logging System
+- **Chronological record**: Sequential logs of executed actions
+- **Bug fix tracking**: Appends fixes to existing logs
+- **Summary generation**: Concise overview of session activity
 
-Based on practical testing, the following workflow provides the most reliable results:
+## 💡 Power User Techniques
 
-1.  **Initial Planning & Execution**:
-    *   **For multi-phase projects**: Start with `/plan [description]`. This assesses complexity, creates the plan (archiving any previously completed one), and executes the first phase (`[x] Phase 1...`).
-    *   **For single-phase tasks**: Use `/plancreate [description]` to generate a detailed plan in chat (complexity is assessed for appropriate detail). Then, use `/create` to execute this plan.
-2.  **Execute Subsequent Phases (for multi-phase plans)**: Use `/act` repeatedly to execute the next available phase (`[ ] Phase N...`) in `plan.md` until all phases are marked (`[x]`).
-3.  **Context Management**:
-    *   **Between Sessions**: Use `/memory`, start a new chat session, use `/recall`, then continue with `/act` or `/plan`.
-    *   **Within a Session**: Continue using `/act`, `/memory`, `/recall` as needed.
-4.  **Bug Fixing**: Use `/sessionlog` to append fix details to the latest log.
-5.  **Starting a New Plan**: Simply use `/plan [new description]`. The system will automatically archive the current `plan.md` if it's fully completed (`[x]` on all phases) before creating the new one.
+### 1. Maximizing AI Context Understanding
 
-## Extending ClaudeFlow: Adding Custom Commands
+```
+# First, provide comprehensive project context
+/plan My e-commerce app uses React 18, Node.js with Express, 
+MongoDB for storage, and JWT for authentication. The app has 
+user profiles, product browsing with filtering, shopping carts, 
+and checkout with Stripe. Now I need a robust admin dashboard.
 
-Follow these steps to add new commands:
-1.  **Define**: Choose a name (`/command`), define purpose.
-2.  **Create Detail File**: Write precise execution steps in `.session/details/command_details.md`.
-3.  **Update `rules.md`**: Add the command to the list, link to the detail file, update general rules/consequences if needed.
-4.  **Consider Integration**: Does it need logging? Affect memory? Interact with plans?
-5.  **Update `README.md`**: Add command to the table, update workflow if needed.
+# When recalling, specify focus areas
+/recall project_state
+```
 
-## Best Practices
+### 2. Phase Micromanagement
 
-- Plan with modular phases and clear category tags.
-- Log significant changes/decisions.
-- Use `/memory` and `/recall` diligently between sessions.
-- Review the session `summary.md` periodically.
+Break complex functionality into distinct phases with clear boundaries:
 
-## System Rules (Summary)
-- Commands start with `/`.
-- Commands are matched exactly (case-sensitive).
-- Files stored only within `.session` subdirectories.
-- Files created *only* upon explicit command invocation.
-- Detail files *must* be read directly (`read_file`) before command execution (no `list_dir` checks).
-- State maintained via memory system. 
+```
+# GOOD PHASE DESIGN
+## [ ] Phase 1: Authentication Setup (auth)
+- Create user model with proper password hashing
+- Implement JWT token generation and validation
+- Add protected route middleware
+
+## [ ] Phase 2: Admin Dashboard UI (ui)
+...
+```
+
+### 3. Context Chains
+
+Link commands for efficient workflow transitions:
+
+```
+/act
+# After implementation completes
+/memory
+Start new chat
+/recall
+/act
+# To Continue with next phase
+```
+
+### 4. Detail-Oriented Planning
+
+```
+/plancreate Create a user profile component that:
+- Displays user avatar, name, email
+- Shows order history with pagination
+- Allows editing profile details with validation
+- Implements responsive design for mobile/tablet/desktop
+- Uses the existing auth context for user data
+```
+
+### 5. UI Excellence Enforcement
+
+Always explicitly reference aesthetic guidelines for UI work:
+
+```
+/plan Create a modern dashboard UI following these principles:
+- Clean, minimalist design with ample whitespace
+- Consistent color scheme (primary: #3B82F6, secondary: #10B981)
+- Responsive layout with grid system
+- Smooth transitions and micro-interactions
+```
+
+## ⚙️ Advanced Configuration
+
+### Custom Command Structure
+
+Each command is defined in its corresponding `.session/details/[command]_details.md` file, making the system extensible:
+
+```
+.session/details/
+├── plan_details.md       # Logic for /plan
+├── act_details.md        # Logic for /act
+├── plancreate_details.md # Logic for /plancreate
+├── create_details.md     # Logic for /create
+├── memory_details.md     # Logic for /memory
+├── recall_details.md     # Logic for /recall
+├── sessionlog_details.md # Logic for /sessionlog
+└── aesthetic_details.md  # UI generation guidelines
+```
+
+### Creating Custom Commands
+
+To extend ClaudeFlow with your own commands:
+
+1. **Define command purpose**: What problem does it solve?
+2. **Create detail file**: Write execution steps in `.session/details/yourcommand_details.md` (e.g., `.session/details/test_details.md` for a `/test` command).
+3. **Add to rules**: Include command in your `.cursorrules` or equivalent.
+4. **Define integration points**: How does it interact with other commands?
+
+Example custom command:
+```
+# /test Command - Implementation Instructions
+
+**Purpose**: Automatically generates tests for the most recently implemented code.
+
+**Execution Steps**:
+1. Identify latest implemented code from logs
+2. Determine appropriate test framework
+3. Generate comprehensive test suite
+4. Create test file
+5. Log test creation
+```
+
+## 🔒 Security Best Practices
+
+1. **Always review generated code** before execution
+2. **Request security explanations** from the AI for critical components
+3. **Verify dependency choices** proposed by the AI
+4. **Implement proper input validation** in all user-facing functionality
+5. **Test edge cases** thoroughly in generated code
+
+## 📊 Measuring Effectiveness
+
+Track these metrics to evaluate ClaudeFlow's impact:
+
+- **Development velocity**: Time from concept to working implementation
+- **Code quality**: Maintainability, performance, security metrics
+- **Context retention accuracy**: How well does the AI recall project details between sessions?
+- **Iteration efficiency**: Number of refinement cycles required per feature
+
+## 🔄 Recommended Workflows
+
+The "🚀 Quick Start: Core Workflows" section provides the primary recommended workflows.
+
+### For New Multi-Phase Projects:
+
+1.  **Planning**: `/plan [comprehensive project description]` -> Review `plan.md`.
+2.  **Execution Cycle (repeat per phase)**:
+    a.  `/act` (implement phase)
+    b.  Review & Test
+    c.  `/memory` (save state)
+    d.  **Start New Chat in IDE**
+    e.  `/recall` (load state)
+3.  **Refinement**: `/sessionlog Bug fix: [description]` as needed.
+
+### For New Single-Phase Tasks:
+
+1.  **Planning**: `/plancreate [specific task description]` -> Review plan in chat.
+2.  **Execution**: `/create`
+3.  **Documentation**: `/sessionlog Completed: [description]` (optional).
+
+### For Maintenance Work (Bug Fixing or Enhancements to Existing Code):
+
+1.  **Context Loading (in a new chat for clarity)**:
+    *   Start a new chat.
+    *   `/recall all` or `/recall [specific focus like project_state or relevant file paths]`
+    *   Manually review relevant code files.
+2.  **Focused Planning**:
+    *   For small fixes/enhancements: `/plancreate Fix [specific issue] by [proposed solution]`
+    *   For larger refactors: `/plan Refactor [component/module] to improve [specific aspect]`
+3.  **Implementation & Documentation**:
+    *   If `/plancreate` was used: `/create`
+    *   If `/plan` was used: Follow the multi-phase execution cycle.
+    *   Document changes with `/sessionlog`.
+    *   Update project state with `/memory`.
 
 ---
-*Note: The ClaudeFlow system workflow and commands were developed and tested primarily using Claude 3.7 within the Cursor IDE environment.* 
+
+*ClaudeFlow is continually evolving. For questions or to contribute improvements, please reference the full documentation or contact the project maintainers.* 
